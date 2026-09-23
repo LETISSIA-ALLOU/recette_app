@@ -49,6 +49,48 @@ L'application contient les écrans suivants :
 4. **Ajouter une recette**
 5. **Paramètres**
 
+## Modèle de données
+
+Chaque recette contient les informations suivantes :
+
+- id
+
+- name
+
+- description
+
+- category
+
+Les données sont séparées de l'interface utilisateur dans le dossier data/.
+
+## Responsive Design
+
+L'application utilise une interface adaptée aux différentes tailles d'écran.
+
+Sur mobile, les recettes sont affichées sous forme de liste.
+
+Sur tablette et écran plus large, les recettes sont organisées sous forme de grille.
+
+## Recherche et filtrage
+
+- La liste des recettes permet :
+
+- de rechercher une recette par son nom ;
+
+- de filtrer les recettes selon leur catégorie ;
+
+- de combiner la recherche et le filtre.
+
+## Ajout d'une recette
+
+Le formulaire permet d'ajouter une nouvelle recette avec :
+
+- un nom ;
+
+- une description ;
+
+- une catégorie.
+
 ## Installation
 
 ### Prérequis
@@ -75,3 +117,19 @@ flutter run -d chrome
 
 
 
+## Captures d'écran
+
+### Accueil
+[Accueil](capture_ecran/Home.png)
+
+### Liste des recettes
+[Recettes](capture_ecran/Liste.png)
+
+### Détail
+[Détail](capture_ecran/Détail.png)
+
+### Ajouter une recette
+[Ajouter](capture_ecran/FormulaireAjout.png)
+
+### Paramètres
+[Paramètres](capture_ecran/Parametres.png)
