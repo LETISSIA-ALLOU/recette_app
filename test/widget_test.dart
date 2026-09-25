@@ -46,12 +46,12 @@ void main() {
         await tester.tap(find.text('Ajouter la recette'));
         await tester.pumpAndSettle();
 
-        expect(find.text('Le nom est obligatoire'), findsOneWidget);
+        expect(find.text('Veuillez saisir le nom de la recette.'), findsOneWidget);
         expect(
-          find.text('La description est obligatoire'),
+          find.text('Veuillez saisir une description.'),
           findsOneWidget,
         );
-        expect(find.text('La catégorie est obligatoire'), findsOneWidget);
+        expect(find.text('Veuillez saisir une catégorie.'), findsOneWidget);
       },
     );
 

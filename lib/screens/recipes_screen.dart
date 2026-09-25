@@ -18,23 +18,46 @@ class _RecipesScreenState extends State<RecipesScreen> {
   String searchQuery = '';
   String selectedCategory = 'Toutes';
 
-  @override
-  Widget build(BuildContext context) {
-    final categories = [
+  /// Retourne la liste des catégories disponibles.
+  List<String> get categories {
+    return [
       'Toutes',
       ...recettes.map((recipe) => recipe.category).toSet(),
     ];
+  }
 
-    final filteredRecipes = recettes.where((Recette recipe) {
-      final matchesSearch = recipe.name
-          .toLowerCase()
-          .contains(searchQuery.toLowerCase());
+  /// Filtre les recettes selon le texte recherché
+  /// et la catégorie sélectionnée.
+  List<Recette> get filteredRecipes {
+    final query = searchQuery.trim().toLowerCase();
 
-      final matchesCategory = selectedCategory == 'Toutes' ||
+    return recettes.where((recipe) {
+      final matchesSearch =
+          query.isEmpty || recipe.name.toLowerCase().contains(query);
+
+      final matchesCategory =
+          selectedCategory == 'Toutes' ||
           recipe.category == selectedCategory;
 
       return matchesSearch && matchesCategory;
     }).toList();
+  }
+
+  void _searchRecipes(String value) {
+    setState(() {
+      searchQuery = value;
+    });
+  }
+
+  void _filterByCategory(String category) {
+    setState(() {
+      selectedCategory = category;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final recipes = filteredRecipes;
 
     return Scaffold(
       appBar: AppBar(
@@ -51,17 +74,14 @@ class _RecipesScreenState extends State<RecipesScreen> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
+                    // Recherche
                     SearchBarWidget(
-                      onChanged: (value) {
-                        setState(() {
-                          searchQuery = value;
-                        });
-                      },
+                      onChanged: _searchRecipes,
                     ),
 
                     const SizedBox(height: 16),
 
-                    // Filtres par catégorie
+                    // Filtrage par catégorie
                     SizedBox(
                       height: 45,
                       child: ListView.separated(
@@ -76,9 +96,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                             category: category,
                             selected: selectedCategory == category,
                             onSelected: () {
-                              setState(() {
-                                selectedCategory = category;
-                              });
+                              _filterByCategory(category);
                             },
                           );
                         },
@@ -87,9 +105,9 @@ class _RecipesScreenState extends State<RecipesScreen> {
 
                     const SizedBox(height: 16),
 
-                    // Liste des recettes
+                    // Résultat de la recherche et du filtrage
                     Expanded(
-                      child: filteredRecipes.isEmpty
+                      child: recipes.isEmpty
                           ? const Center(
                               child: Text(
                                 'Aucune recette trouvée.',
@@ -105,28 +123,32 @@ class _RecipesScreenState extends State<RecipesScreen> {
                                     mainAxisSpacing: 8,
                                     childAspectRatio: 3.2,
                                   ),
-                                  itemCount: filteredRecipes.length,
+                                  itemCount: recipes.length,
                                   itemBuilder: (context, index) {
-                                    final recipe = filteredRecipes[index];
+                                    final recipe = recipes[index];
 
                                     return RecipeCard(
                                       recipe: recipe,
-                                      onTap: () => context.go(
-                                        '/recipes/${recipe.id}',
-                                      ),
+                                      onTap: () {
+                                        context.go(
+                                          '/recipes/${recipe.id}',
+                                        );
+                                      },
                                     );
                                   },
                                 )
                               : ListView.builder(
-                                  itemCount: filteredRecipes.length,
+                                  itemCount: recipes.length,
                                   itemBuilder: (context, index) {
-                                    final recipe = filteredRecipes[index];
+                                    final recipe = recipes[index];
 
                                     return RecipeCard(
                                       recipe: recipe,
-                                      onTap: () => context.go(
-                                        '/recipes/${recipe.id}',
-                                      ),
+                                      onTap: () {
+                                        context.go(
+                                          '/recipes/${recipe.id}',
+                                        );
+                                      },
                                     );
                                   },
                                 ),
